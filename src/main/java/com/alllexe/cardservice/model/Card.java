@@ -5,7 +5,6 @@
  */
 package com.alllexe.cardservice.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,14 +34,10 @@ public class Card {
     private Integer id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @JsonIgnore
     private User user;
     @Column(name = "card_number")
     private String cardNumber;
     @Column(name = "expire_date")
     private LocalDateTime expireDate;
     private BigDecimal balance;
-
-
-
 }
