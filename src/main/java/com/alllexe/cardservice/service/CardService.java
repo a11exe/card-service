@@ -22,4 +22,7 @@ public class CardService {
         return repository.findByUserId(id);
     }
 
+    public Card save(Card card) {
+        return repository.save(card);
+    }
 }

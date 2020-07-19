@@ -6,12 +6,15 @@
 package com.alllexe.cardservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Setter
+@Getter
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class CardDto {
     private Integer id;

@@ -28,3 +28,5 @@ spring:
   # Server configuration
   server:
     port: 8080 #set your port
+
+cards.fact.resource.url: "https://367944d7-75bf-4757-9622-5c76957d5253.mock.pstmn.io/cards/user/"
