@@ -19,8 +19,8 @@ public class CardService {
     @Autowired
     private CardRepository repository;
 
-    public List<Card> findCardByUser(User user) {
-        return repository.findByUser(user);
+    public List<Card> findByUserId(Integer id) {
+        return repository.findByUserId(id);
     }
 
 }

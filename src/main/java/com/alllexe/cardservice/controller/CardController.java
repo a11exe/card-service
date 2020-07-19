@@ -35,9 +35,7 @@ public class CardController {
     @ResponseStatus(HttpStatus.OK)
     public List<CardDto> deleteContact(
             @PathVariable Integer id) {
-        User user = new User();
-        user.setId(id);
-        List<Card> cards = cardService.findCardByUser(user);
+         List<Card> cards = cardService.findByUserId(id);
 
         return cards.stream()
                 .map(this::convertToDto)
