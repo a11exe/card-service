@@ -26,7 +26,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
+@ToString(exclude = {"user"})
 @EqualsAndHashCode(of = {"id"})
 public class Card {
     @Id

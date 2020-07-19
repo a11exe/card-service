@@ -19,10 +19,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -45,28 +49,72 @@ public class MessageConsumer {
     @JmsListener(destination = "update-card-by-user-id")
     public void updateCardListByUserId(String message){
         log.info("Message received {} ", message);
-        User user = new User();
-        // TODO check Number format exception
-        user.setId(Integer.parseInt(message));
-//        ResponseEntity<String> response
-//                = restTemplate.getForEntity(cardsFactResourceUrl + "/" + message, String.class);
-//        log.info(response.getBody());
-        // TODO check parse response exception
+        try {
+            Integer userId = Integer.parseInt(message);
+            User user = new User();
+            user.setId(userId);
+
+            List<Card> cardsActual = cardService.findByUserId(userId);
+
+            List<Card> cardsFact = getCardsFact(message);
+
+
+            Map<String, Card> mapActulCards = cardsActual.stream().collect(
+                    Collectors.toMap(Card::getCardNumber, x -> x));
+
+            Map<String, Card> mapFactCards = cardsFact.stream().collect(
+                    Collectors.toMap(Card::getCardNumber, x -> x));
+
+            Set<String> updateCardNumbers = new HashSet<>();
+
+            for (Map.Entry<String, Card> entry: mapFactCards.entrySet()
+                 ) {
+                String cardNumber = entry.getKey();
+                if (mapActulCards.containsKey(cardNumber)) {
+                    updateCardNumbers.add(cardNumber);
+                    mapActulCards.remove(cardNumber);
+                }
+            }
+
+            mapActulCards.values().forEach(card -> {
+                cardService.delete(card);
+                log.info("Deleted card {}", card);
+            });
+
+            updateCardNumbers.forEach(cardNumber -> {
+                Card card = mapFactCards.get(cardNumber);
+                card.setUser(user);
+                cardService.updateByCardNumberAndUserId(card);
+                log.info("Updated card {}", card);
+                mapFactCards.remove(cardNumber);
+            });
+
+            mapFactCards.values().forEach(card -> {
+                card.setUser(user);
+                card.setId(null);
+                cardService.save(card);
+                log.info("Saved card {}", card);
+            });
+
+
+        } catch (NumberFormatException | RestClientException | NullPointerException e) {
+            log.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private List<Card> getCardsFact(String message) {
         ResponseEntity<List<CardDto>> rateResponse =
                 restTemplate.exchange(cardsFactResourceUrl + "/" + message,
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<CardDto>>() {
                         });
+
         List<CardDto> cardDtos = rateResponse.getBody();
-        // TODO check convert exception
-        List<Card> cards = Objects.requireNonNull(cardDtos).stream()
+
+        return Objects.requireNonNull(cardDtos).stream()
                 .map(this::convertToCard)
                 .collect(Collectors.toList());
-        cards.forEach(card -> card.setUser(user));
-
-        cards.forEach(card -> log.info(card.toString()));
-        // TODO make full update
-        cards.forEach(card -> cardService.save(card));
-
     }
 
     private Card convertToCard(CardDto cardDto) {

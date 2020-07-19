@@ -25,4 +25,13 @@ public class CardService {
     public Card save(Card card) {
         return repository.save(card);
     }
+
+    public void delete(Card card) {
+        repository.delete(card);
+    }
+
+    public void updateByCardNumberAndUserId(Card card) {
+        repository.updateByCardNumberAndUserId(
+                card.getCardNumber(), card.getUser().getId(), card.getExpireDate(), card.getBalance());
+    }
 }
