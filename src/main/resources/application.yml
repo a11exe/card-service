@@ -14,7 +14,10 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: validate
-
+  activemq:
+    broker-url: tcp://localhost:61616
+    user: admin
+    password: admin
  # Logger configuration
   logging:
     pattern:

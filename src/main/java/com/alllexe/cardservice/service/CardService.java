@@ -6,7 +6,6 @@
 package com.alllexe.cardservice.service;
 
 import com.alllexe.cardservice.model.Card;
-import com.alllexe.cardservice.model.User;
 import com.alllexe.cardservice.repository.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

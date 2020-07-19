@@ -6,8 +6,8 @@
 package com.alllexe.cardservice.controller;
 
 import com.alllexe.cardservice.dto.CardDto;
+import com.alllexe.cardservice.jms.MessageProducer;
 import com.alllexe.cardservice.model.Card;
-import com.alllexe.cardservice.model.User;
 import com.alllexe.cardservice.service.CardService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +30,18 @@ public class CardController {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private MessageProducer messageProducer;
+
     @GetMapping("/cards/user/{id}")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     public List<CardDto> deleteContact(
             @PathVariable Integer id) {
-         List<Card> cards = cardService.findByUserId(id);
 
+        List<Card> cards = cardService.findByUserId(id);
+        String msg = String.valueOf(id);
+        messageProducer.publish(msg);
         return cards.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
