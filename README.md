@@ -11,6 +11,8 @@ Springboot / Postgresql /Active MQ / Rest tempale
 
     import mock data from ./postman-mock-server/cards-fact.postman_collection.json
     
+    check postman mock server url in application.yml in cards.fact.resource.url
+    
 ### start postgresql database and active mq in docker
 
     sh start.sh (from card-service folder)
