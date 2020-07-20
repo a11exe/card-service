@@ -93,7 +93,7 @@ public class MessageConsumer {
                 card.setUser(user);
                 card.setId(null);
                 cardService.save(card);
-                log.info("Saved card {}", card);
+                log.info("Added card {}", card);
             });
 
 
