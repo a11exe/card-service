@@ -13,7 +13,7 @@ Springboot / Postgresql /Active MQ / Rest tempale
     
 ### start postgresql database and active mq in docker
 
-    sh run.sh (from card-service folder)
+    sh start.sh (from card-service folder)
         
 ### start application    
 

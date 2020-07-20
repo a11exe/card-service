@@ -5,11 +5,11 @@ echo "Run database script"
 echo "********************************************************"
 cd ./database/
 sh build.sh
-sh run.sh
+sh start.sh
 
 cd $cur_dir
 
 echo "Run activemq script"
 echo "********************************************************"
 docker stop activemq
-sh ./activemq/run.sh
+sh ./activemq/start.sh

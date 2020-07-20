@@ -1,6 +1,6 @@
 create table card_fact (
   id            serial not null,
-  card_number   varchar(255),
+  card_number   varchar(255) unique,
   expire_date   timestamp,
   balance       numeric,
   user_id       int4,

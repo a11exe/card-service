@@ -1,0 +1,32 @@
+# Spring Boot configuration
+spring:
+  # Database
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password: password
+  # JPA properties
+  jpa:
+    generate-ddl: false
+    show-sql: false
+    database: h2
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: validate
+  activemq:
+    broker-url: vm://embedded-broker?broker.persistent=false
+    user: admin
+    password: admin
+ # Logger configuration
+  logging:
+    pattern:
+      console: "%d %-5level %logger : %msg%n"
+    level:
+      org.springframework: info
+      org.hibernate: debug
+  # Server configuration
+  server:
+    port: 8080 #set your port
+
+cards.fact.resource.url: "https://367944d7-75bf-4757-9622-5c76957d5253.mock.pstmn.io/cards/user/"
